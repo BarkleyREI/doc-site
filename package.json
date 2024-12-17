@@ -1,13 +1,14 @@
 {
 	"name": "@barkleyrei/doc-site",
-	"version": "0.1.0",
+	"version": "0.1.2",
 	"description": "Templated builds for documentation sites.",
 	"main": "index.js",
 	"bin": {
 		"dsb-init": "bin/dsb-init",
 		"dsb": "bin/dsb-build",
 		"dsb-build": "bin/dsb-build",
-		"dsb-serve": "bin/dsb-serve"
+		"dsb-serve": "bin/dsb-serve",
+		"dsb-ghw": "bin/dsb-github-workflow"
 	},
 	"scripts": {
 		"doc-site-build": "node index.js",

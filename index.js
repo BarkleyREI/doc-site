@@ -361,6 +361,13 @@ module.exports = {
 
 		module.exports.WriteFile(module.exports.buildDirectory + "/_sidebar.md", contents.join("\n"));
 
+	},
+
+	AddGitHubWorkflow: function() {
+		let dir = process.cwd() + '/' + module.exports.buildDirectory;
+		module.exports.MakeDirectory(process.cwd() + '/.github');
+		module.exports.MakeDirectory(process.cwd() + '/.github/workflows');
+		module.exports.CopyFile(__dirname+'/templates/.github/workflows/static.yml', process.cwd() + "/.github/workflows/static.yml");
 	}
 
 }
