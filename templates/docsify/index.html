@@ -1,0 +1,62 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta charset="UTF-8" />
+    <link
+            rel="stylesheet"
+            href="//cdn.jsdelivr.net/npm/docsify@4/themes/vue.css"
+    />
+    <link rel="stylesheet" href="//barkleyrei.github.io/identity/docsify/custom.css">
+    <link rel="stylesheet" href="theme-overrides.css">
+    <title>{{name}}</title>
+</head>
+<body>
+<div id="app"></div>
+<script>
+	window.$docsify = {
+		name: '{{name}}',
+		logo: 'https://barkleyrei.github.io/identity/logo/primary.png',
+		// Sidebar Configuration
+		auto2top: true,
+		loadSidebar: true,
+		maxLevel: 2,
+		// Set subMaxLevel to 0 to remove automatic display of page table of contents (TOC) in Sidebar
+		subMaxLevel: 5,
+		requestHeaders: {
+			'cache-control': 'max-age=no-cache',
+		},
+
+		//repo: 'https://github.com/BarkleyREI/integration-guidelines',
+
+		formatUpdated: '{MM}/{DD}/{YYYY} {HH}:{mm}',
+
+		// Search Plugin Configuration
+		search: {
+			placeholder: 'Type to search',
+			noData: 'No matches found.',
+			// Headline depth, 1 - 6
+			depth: 2,
+		}
+	};
+</script>
+
+<!-- Required -->
+<script src="//cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
+
+<!-- Recommended -->
+<script src="//cdn.jsdelivr.net/npm/docsify@4/lib/plugins/zoom-image.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.js"></script>
+<script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/sidebar.min.css" />
+
+
+<!-- ref: https://github.com/docsifyjs/docsify/blob/develop/docs/language-highlight.md -->
+{{highlights}}
+
+</body>
+</html>

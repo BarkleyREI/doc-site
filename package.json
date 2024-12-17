@@ -1,0 +1,22 @@
+{
+	"name": "@barkleyrei/doc-site",
+	"version": "0.1.0",
+	"description": "Templated builds for documentation sites.",
+	"main": "index.js",
+	"bin": {
+		"dsb-init": "bin/dsb-init",
+		"dsb": "bin/dsb-build",
+		"dsb-build": "bin/dsb-build",
+		"dsb-serve": "bin/dsb-serve"
+	},
+	"scripts": {
+		"doc-site-build": "node index.js",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "",
+	"license": "MIT",
+	"dependencies": {
+		"docsify-cli": "^4.4.4",
+		"shelljs": "^0.8.5"
+	}
+}

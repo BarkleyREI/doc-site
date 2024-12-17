@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+'use strict';
+
+// Ref: https://blog.npmjs.org/post/118810260230/building-a-simple-command-line-tool-with-npm.html
+
+let dsbIndex = require('../index.js');
+let shell = require('shelljs');
+let path = dsbIndex.buildDirectory.replace('/','');
+console.log('Running Docsify commands to serve ' + path);
+shell.exec('docsify serve ' + path);

@@ -1,0 +1,19 @@
+#!/usr/bin/env node
+'use strict';
+
+// Ref: https://blog.npmjs.org/post/118810260230/building-a-simple-command-line-tool-with-npm.html
+
+// let shell = require('shelljs');
+// shell.exec('docsify init');
+
+let dsbIndex = require('../index.js');
+
+// console.log('Directory: ' + __dirname);
+// console.log('Filename: ' + __filename);
+// console.log('CWD: ' + process.cwd());
+
+let projectName = process.cwd();
+projectName = projectName.substring(projectName.lastIndexOf('/')+1);
+console.log('Project Name: '+projectName);
+
+dsbIndex.Initialize(projectName);
