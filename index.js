@@ -10,6 +10,7 @@ module.exports = {
 	skippedItems: ['node_modules'], // directories and files to skip in copy,
 	languages: ['bash','php','velocity','xml','ini'],
 	packageVersion: 'unknown-version',
+	replacementObj: [],
 
 	UpdateVersion: function (v) {
 		module.exports.packageVersion = v;
@@ -40,25 +41,24 @@ module.exports = {
 		fs.copyFileSync(sourceFilePath, destFilePath);
 	},
 
-	DoReplacements: function (content, replacementObj) {
-		Object.entries(replacementObj).forEach(([k, v]) => {
-			content = content.replace('{{'+k+'}}', v);
+	DoReplacements: function (content) {
+		Object.entries(this.replacementObj).forEach(([k, v]) => {
+			content = content.replaceAll('{{'+k+'}}', v);
 		})
 		return content;
 	},
 
 	Initialize: function (projectName) {
 
-
-
 		let embeds = '';
 		module.exports.languages.forEach(l => {
 			embeds += '<script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-' + l + '.min.js"></script>';
 		});
 
-		let replacementObj = {
+		this.replacementObj = {
 			['name']: projectName,
-			['highlights']: embeds
+			['highlights']: embeds,
+			['body-version-class']: 'v-' + this.packageVersion.replaceAll('.','_')
 		};
 
 		console.log('Initializing doc-site project...');
@@ -68,13 +68,13 @@ module.exports = {
 		let contents = module.exports.ReadFile(__dirname + '/templates/docsify/index.html');
 
 		// Replacements
-		contents = module.exports.DoReplacements(contents, replacementObj);
+		contents = module.exports.DoReplacements(contents);
 
 		module.exports.WriteFile(module.exports.buildDirectory + '/index.html', contents);
 
 		// Default README file
 		contents = module.exports.ReadFile(__dirname + '/templates/docsify/README.md');
-		contents = module.exports.DoReplacements(contents, replacementObj);
+		contents = module.exports.DoReplacements(contents);
 		module.exports.WriteFile(module.exports.buildDirectory + '/README.md', contents);
 
 		module.exports.CopyFile(__dirname + '/templates/docsify/theme-overrides.css', module.exports.buildDirectory + '/theme-overrides.css');
@@ -359,7 +359,10 @@ module.exports = {
 		// }
 		// $contents[] .= '</div>';
 
-		module.exports.WriteFile(module.exports.buildDirectory + "/_sidebar.md", contents.join("\n"));
+
+
+		let content_string = this.DoReplacements(contents.join("\n"));
+		module.exports.WriteFile(module.exports.buildDirectory + "/_sidebar.md", content_string);
 
 	},
 
