@@ -24,7 +24,7 @@ A variety of files, based on extensions, will be built out to their own stand-al
 - **XML** (`.xml` extensions)
 - **Velocity** (`.vm` extensions)
 - **PHP** (`.php` extensions)
-- **INI** (`.ini extensions)
+- **INI** (`.ini` extensions)
 
 **doc-site** renames some files during build for display within the folder structure. If you want to bypass this, prefix your file with a `~` character. For example, `~.htaccess`.
 
