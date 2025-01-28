@@ -4,7 +4,41 @@
 // Ref: https://blog.npmjs.org/post/118810260230/building-a-simple-command-line-tool-with-npm.html
 
 let dsbIndex = require('../index.js');
-let shell = require('shelljs');
+//let shell = require('shelljs');
 let path = dsbIndex.buildDirectory.replace('/','');
-console.log('Running Docsify commands to serve ' + path);
-shell.exec('docsify serve ' + path);
+const { spawn, exec } = require('child_process');
+const fs = require('fs');
+
+let exists = dsbIndex.HasBeenBuilt(dsbIndex.buildDirectory);
+if (!exists) {
+	console.log('Build has not yet been run on this project. Execute the command "dsb" before serving the site.');
+	return;
+}
+
+console.log('Running Docsify commands to serve ' + path + ' ...');
+//let cmd = 'docsify serve ' + path;
+//shell.exec('docsify serve ' + path);
+
+let lastProcessId = dsbIndex.ReadFile('_log/.pid');
+if (lastProcessId !== null) {
+	console.log('Killing previous process with ID '+lastProcessId);
+	exec('kill '+lastProcessId);
+}
+
+dsbIndex.MakeDirectory('_log');
+const out = fs.openSync('_log/out.log', 'a');
+const err = fs.openSync('_log/out.log', 'a');
+
+// Spawn the subprocess
+const sub = spawn('docsify',['serve',path], {
+	detached: true,
+	stdio: ['ignore', out, err]
+});
+let pid = sub.pid;
+sub.unref();
+
+dsbIndex.WriteFile('_log/.pid', pid.toString());
+
+console.log('Document Site will be available at http://localhost:3000');
+console.log('');
+console.log('Refer to logs under _log directory');

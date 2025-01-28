@@ -17,3 +17,6 @@ projectName = projectName.substring(projectName.lastIndexOf('/')+1);
 console.log('Project Name: '+projectName);
 
 dsbIndex.Initialize(projectName);
+dsbIndex.AddGitHubWorkflow();
+dsbIndex.MakeDirectory('_log')
+console.log('We recommend adding the _log directory to your .gitignore file.');

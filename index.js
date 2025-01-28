@@ -16,6 +16,17 @@ module.exports = {
 		module.exports.packageVersion = v;
 	},
 
+	/**
+	 * Determines if the site has been built yet by looking at index file existence.
+	 * @param dir
+	 * @returns {boolean}
+	 * @constructor
+	 */
+	HasBeenBuilt: function (dir) {
+		let fs = require('fs');
+		return (fs.existsSync(dir+"/index.html"));
+	},
+
 	MakeDirectory: function (dir) {
 		module.exports.OutputVerbose('Creating directory '+dir);
 		let fs = require('fs');
@@ -28,6 +39,7 @@ module.exports = {
 
 	ReadFile: function (filePath) {
 		let fs = require('fs');
+		if (!fs.existsSync(filePath)) { return null; }
 		return fs.readFileSync(filePath,{ encoding: 'utf8' });
 	},
 
@@ -48,17 +60,75 @@ module.exports = {
 		return content;
 	},
 
+	/**
+	 * left=right -> returns 0
+	 * left<right -> returns -1
+	 * left>right -> returns 1
+	 * @param left
+	 * @param right
+	 * @returns {number}
+	 * @constructor
+	 */
+	VersionCompare: function(left, right) {
+		let v_l = left.split('.');
+		let major_l = v_l[0];
+		let minor_l = v_l[1];
+		let patch_l = v_l[2];
+
+		let v_r = right.split('.');
+		let major_r = v_r[0];
+		let minor_r = v_r[1];
+		let patch_r = v_r[2];
+
+		if (major_l === major_r) {
+			if (minor_l === minor_r) {
+				if (patch_l === patch_r) {
+					return 0;
+				}
+				return (patch_l > patch_r ? 1 : -1);
+			}
+			return (minor_l > minor_r ? 1 : -1);
+		}
+		return (major_l > major_r ? 1 : -1);
+
+	},
+
+	GetBodyClasses: function () {
+		let classes = [];
+
+		// All versions that need body classes
+		let versionDifferences = ['0.1.4'];
+
+		let self = this;
+		versionDifferences.forEach(function(v) {
+			const vc = self.VersionCompare(self.packageVersion, v);
+			if (vc >= 0) {
+				classes.push(v);
+			}
+		});
+
+		return classes;
+	},
+
 	Initialize: function (projectName) {
+
+		let self = this;
 
 		let embeds = '';
 		module.exports.languages.forEach(l => {
 			embeds += '<script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-' + l + '.min.js"></script>';
 		});
 
+		let bodyClasses = this.GetBodyClasses();
+		let bodyClassesString = '';
+		bodyClasses.forEach(function(v) {
+			bodyClassesString += ' v-' + v.replaceAll('.','_');
+		});
+
 		this.replacementObj = {
 			['name']: projectName,
 			['highlights']: embeds,
-			['body-version-class']: 'v-' + this.packageVersion.replaceAll('.','_')
+			['body-version-class']: bodyClassesString
 		};
 
 		console.log('Initializing doc-site project...');
