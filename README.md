@@ -10,7 +10,7 @@ Additionally, **doc-site** handles some basic template replacements, and logic t
 - Install **doc-site**: `npm install @barkleyrei/doc-site`
 - Initialize **doc-site** in a folder with your documentation: `dsb-init`
 - Add GitHub workflow files to auto-deploy to GitHub page on publish: `dsb-ghw`
-- Build your **doc-site**: `dsb` or `dsb-build
+- Build your **doc-site**: `dsb` or `dsb-build`
 - Run your **doc-site** locally: `dsb-serve`
 
 ## Content Building
@@ -24,7 +24,7 @@ A variety of files, based on extensions, will be built out to their own stand-al
 - **XML** (`.xml` extensions)
 - **Velocity** (`.vm` extensions)
 - **PHP** (`.php` extensions)
-- **INI** (`.ini extensions)
+- **INI** (`.ini` extensions)
 
 **doc-site** renames some files during build for display within the folder structure. If you want to bypass this, prefix your file with a `~` character. For example, `~.htaccess`.
 
