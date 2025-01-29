@@ -11,6 +11,15 @@ module.exports = {
 	languages: ['bash','php','velocity','xml','ini'],
 	packageVersion: 'unknown-version',
 	replacementObj: [],
+	projectSettings: {
+		name: null
+	},
+
+	// Array of versions where markup adjustments were made, to support version-focused updates
+	versionDifferences: [
+		'0.1.4',
+		'0.1.6'
+	],
 
 	UpdateVersion: function (v) {
 		module.exports.packageVersion = v;
@@ -96,11 +105,8 @@ module.exports = {
 	GetBodyClasses: function () {
 		let classes = [];
 
-		// All versions that need body classes
-		let versionDifferences = ['0.1.4'];
-
 		let self = this;
-		versionDifferences.forEach(function(v) {
+		this.versionDifferences.forEach(function(v) {
 			const vc = self.VersionCompare(self.packageVersion, v);
 			if (vc >= 0) {
 				classes.push(v);
@@ -111,6 +117,8 @@ module.exports = {
 	},
 
 	Initialize: function (projectName) {
+
+		this.projectSettings.name = projectName;
 
 		let self = this;
 
@@ -360,7 +368,12 @@ module.exports = {
 
 		let contents = [];
 		let exclusions = ['README.md'];
-		contents.push('- [Overview](README)');
+
+		let primaryLinkText = 'Overview';
+		if (this.projectSettings.name) {
+			primaryLinkText = this.DoReplacements(this.projectSettings.name);
+		}
+		contents.push('- ['+primaryLinkText+']()');
 
 		let dir = process.cwd() + '/' + module.exports.buildDirectory;
 

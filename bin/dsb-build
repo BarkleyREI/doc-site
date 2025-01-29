@@ -9,6 +9,11 @@ dsbIndex.UpdateVersion(version);
 
 let projectName = process.cwd();
 projectName = projectName.substring(projectName.lastIndexOf('/')+1);
+
+projectName = projectName
+	.replaceAll('-', ' ')
+	.replaceAll('_', ' ');
+
 dsbIndex.Initialize(projectName);
 dsbIndex.CopyDocumentsToBuild();
 dsbIndex.BuildSidebar();
