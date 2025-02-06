@@ -250,6 +250,15 @@ module.exports = {
 		//fs.cpSync(__dirname, module.exports.buildDirectory, {recursive: true});
 	},
 
+	GetFileMarkdownTitle: function(file) {
+		let contents = this.ReadFile(file);
+		let lines = contents.split("\n");
+		if (lines[0].startsWith('# ')) {
+			return lines[0].substring(2);
+		}
+		return null;
+	},
+
 	GetFileDisplayName: function(file) {
 
 		if (file.startsWith('~')) {
@@ -307,7 +316,7 @@ module.exports = {
 
 		// Landing Page?
 		if (fs.existsSync(dirPath + "/README.md")) {
-			contents.push(prefix + "- ["+displayName+"]("+dir+"/README.md)");
+			contents.push(prefix + "- ["+displayName+"]("+dir+"/)");
 			//Output::Verbose("\t\t✅ Added index file for {$filename}");
 		} else {
 			module.exports.CopyFile(__dirname+'/templates/docsify/default-index.md', dirPath + "/README.md");
@@ -370,9 +379,13 @@ module.exports = {
 		let exclusions = ['README.md'];
 
 		let primaryLinkText = 'Overview';
-		if (this.projectSettings.name) {
+		let primaryLinkTextFromContents = this.GetFileMarkdownTitle(process.cwd() + '/README.md');
+		if (primaryLinkTextFromContents !== null) {
+			primaryLinkText = primaryLinkTextFromContents;
+		} else if (this.projectSettings.name) {
 			primaryLinkText = this.DoReplacements(this.projectSettings.name);
 		}
+
 		contents.push('- ['+primaryLinkText+']()');
 
 		let dir = process.cwd() + '/' + module.exports.buildDirectory;
@@ -403,6 +416,12 @@ module.exports = {
 					contents.push("- [" + displayName + "](" + fullPath + ")");
 				} else {
 					let displayName = module.exports.GetFileDisplayName(file);
+
+					let fixedFile = file;
+					if (fixedFile.toLowerCase().endsWith('readme.md')) {
+						console.log('test: '+fixedFile);
+					}
+
 					contents.push("- [" + displayName + "](" + file + ")");
 				}
 

@@ -1,6 +1,6 @@
 {
 	"name": "@barkleyrei/doc-site",
-	"version": "0.1.6",
+	"version": "0.1.7",
 	"description": "Templated builds for documentation sites.",
 	"main": "index.js",
 	"bin": {
